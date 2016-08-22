@@ -1,0 +1,27 @@
+{
+    "name": "vinnia/upsales",
+    "description": "Wrapper for Upsales API",
+    "authors": [
+        {
+            "name": "Joakim Carlsten",
+            "email": "joakim@vinnia.se"
+        }
+    ],
+    "require": {
+        "php": "^7.0",
+        "guzzlehttp/guzzle": "^6.2"
+    },
+    "autoload": {
+        "psr-4": {
+            "Vinnia\\Upsales\\" : "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Vinnia\\Upsales\\Tests\\" : "tests/unit"
+        }
+    },
+    "require-dev": {
+        "codeception/codeception": "^2.2"
+    }
+}
