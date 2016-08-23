@@ -44,7 +44,7 @@ class ClientTest extends Test
     /**
      * @test
      */
-    public function it_should_find_vinnia_by_orgnr()
+    public function it_should_find_client_by_orgnr()
     {
         $res = $this->client->getClientByOrgNo('556933-9251');
         $clients = Client::decodeResponse($res);
@@ -55,7 +55,7 @@ class ClientTest extends Test
     /**
      * @test
      */
-    public function it_should_find_vinnia_by_orgnr_without_dash()
+    public function it_should_find_client_by_orgnr_without_dash()
     {
         $res = $this->client->getClientByOrgNo('5569339251');
         $clients = Client::decodeResponse($res);
