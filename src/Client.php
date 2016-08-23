@@ -62,21 +62,37 @@ class Client
     /**
      * @return ResponseInterface
      */
-    public function getClients($options = [])
+    public function getClients($options = []) : ResponseInterface
     {
         return $this->sendRequest('GET', 'accounts', $options);
     }
 
-    public function getClientByOrgNo(String $orgNo)
+    public function getClientByOrgNo(String $orgNo) : ResponseInterface
     {
         //TODO: Verify that fieldId 1 is always orgno at Upsales
-        //TODO: Verify orgno supplied
+        //Validate orgno supplied
+        $orgNoFilterArray[] = str_replace('-', '', $orgNo);
+
+        //If supplied orgno is only 10 char (i.e. without dash)
+        //Insert dash
+        if (10 === strlen($orgNo)) {
+            $orgNo = substr_replace($orgNo, '-', 6, 0);
+        }
+
+        $orgNoFilterArray[] = $orgNo;
+
+        $orgNoFilter = implode(',', $orgNoFilterArray);
         $options = [
             'query' => [
-                'custom' => "eq:1:$orgNo"
+                'custom' => "eq:1:$orgNoFilter"
             ]
         ];
         return $this->getClients($options);
+    }
+
+    public function getClientById(String $id) : ResponseInterface
+    {
+        return $this->sendRequest('GET', 'accounts'.'/'.$id);
     }
 
     /**

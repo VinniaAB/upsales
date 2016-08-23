@@ -29,7 +29,9 @@ class ClientTest extends Test
         $this->client = Client::make($this->env['accessToken']);
     }
 
-    /** @test */
+    /**
+     * deprecated test - only takes bandwidth
+     */
     public function it_should_load_1000_clients()
     {
         $res = $this->client->getClients();
@@ -48,5 +50,27 @@ class ClientTest extends Test
         $clients = Client::decodeResponse($res);
         codecept_debug($clients);
         $this->assertEquals(1, count($clients['metadata']['total']));
+    }
+
+    /**
+     * @test
+     */
+    public function it_should_find_vinnia_by_orgnr_without_dash()
+    {
+        $res = $this->client->getClientByOrgNo('5569339251');
+        $clients = Client::decodeResponse($res);
+        codecept_debug($clients);
+        $this->assertEquals(1, count($clients['metadata']['total']));
+    }
+
+    /**
+     * @test
+     */
+    public function it_should_find_client_by_id()
+    {
+        $res = $this->client->getClientById('3326');
+        $client = Client::decodeResponse($res);
+        codecept_debug($client);
+        $this->assertEquals('Snille Bemanning AB', $client['data']['name']);
     }
 }
