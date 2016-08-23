@@ -73,8 +73,7 @@ class Client
         //TODO: Verify orgno supplied
         $options = [
             'query' => [
-                'custom.fieldId' => 1,
-                'custom.value' => $orgNo
+                'custom' => "eq:1:$orgNo"
             ]
         ];
         return $this->getClients($options);
