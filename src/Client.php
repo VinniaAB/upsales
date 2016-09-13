@@ -69,19 +69,7 @@ class Client
 
     public function getClientByOrgNo(String $orgNo) : ResponseInterface
     {
-        //TODO: Verify that fieldId 1 is always orgno at Upsales
-        //Validate orgno supplied
-        $orgNoFilterArray[] = str_replace('-', '', $orgNo);
-
-        //If supplied orgno is only 10 char (i.e. without dash)
-        //Insert dash
-        if (10 === strlen($orgNo)) {
-            $orgNo = substr_replace($orgNo, '-', 6, 0);
-        }
-
-        $orgNoFilterArray[] = $orgNo;
-
-        $orgNoFilter = implode(',', $orgNoFilterArray);
+        $orgNoFilter = implode(',', self::getOrgNoVariations($orgNo));
         $options = [
             'query' => [
                 'custom' => "eq:1:$orgNoFilter"
@@ -105,6 +93,29 @@ class Client
     {
         $options = array_merge_recursive($options, $this->queries);
         return $this->client->request($method, self::API_URL . $endpoint, $options);
+    }
+
+    /**
+     * Takes an organisational number and returns both with and without dash or empty
+     * if correct Orgno is not supplied
+     * @param string $orgNo
+     * @return array
+     */
+    public static function getOrgNoVariations(string $orgNo): array
+    {
+        //TODO: Could be done better with regexp
+        //Validate orgno supplied
+        $orgNoFilterArray[] = str_replace('-', '', $orgNo);
+
+        //If supplied orgno is only 10 char (i.e. without dash)
+        //Insert dash
+        if (10 === strlen($orgNo)) {
+            $orgNo = substr_replace($orgNo, '-', 6, 0);
+        }
+
+        $orgNoFilterArray[] = $orgNo;
+
+        return $orgNoFilterArray;
     }
 
 }

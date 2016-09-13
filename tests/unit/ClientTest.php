@@ -73,4 +73,14 @@ class ClientTest extends Test
         codecept_debug($client);
         $this->assertEquals('Snille Bemanning AB', $client['data']['name']);
     }
+
+    /**
+     * @test
+     */
+    public function it_should_generate_two_variations_of_org_no()
+    {
+        $orgNo = '556933-9251';
+        $orgNos = $this->client::getOrgNoVariations($orgNo);
+        $this->assertEquals(['5569339251', '556933-9251'], $orgNos);
+    }
 }
