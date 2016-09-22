@@ -68,11 +68,29 @@ class ClientTest extends Test
         $this->assertEquals('Snille Bemanning AB', $client['data']['name']);
     }
 
-    public function testItShouldGenerateTwoVariationsOfOrgNo()
+    public function orgNoProvider(): array
     {
-        $orgNo = '556933-9251';
-        $orgNos = Client::getOrgNoVariations($orgNo);
-        $this->assertEquals(['5569339251', '556933-9251'], $orgNos);
+        return [
+            ['556933-9251', ['5569339251', '556933-9251']],
+            ['5569339251', ['5569339251', '556933-9251']],
+            ['5569339251_HARAMBE_COOL', ['5569339251', '556933-9251']], // extra stuff at the end works too.
+            ['INVALID_NUMBER', []],
+        ];
+    }
+
+    /**
+     * @dataProvider orgNoProvider
+     * @param string $toParse
+     * @param array $expectedResult
+     */
+    public function testItShouldGenerateTwoVariationsOfOrgNo(string $toParse, array $expectedResult)
+    {
+        $variations = Client::getOrgNoVariations($toParse);
+        $this->assertCount(count($expectedResult), $variations);
+
+        foreach ($expectedResult as $num) {
+            $this->assertContains($num, $variations);
+        }
     }
 
 }

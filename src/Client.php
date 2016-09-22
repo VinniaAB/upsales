@@ -63,7 +63,7 @@ class Client
      * @param bool $assoc whether do decode to an associative array
      * @return string[] decoded response
      */
-    public static function decodeResponse(ResponseInterface $response, $assoc = true)
+    public static function decodeResponse(ResponseInterface $response, bool $assoc = true)
     {
         return json_decode((string)$response->getBody(), $assoc);
     }
@@ -113,19 +113,14 @@ class Client
      */
     public static function getOrgNoVariations(string $orgNo): array
     {
-        //TODO: Could be done better with regexp
-        //Validate orgno supplied
-        $orgNoFilterArray[] = str_replace('-', '', $orgNo);
-
-        //If supplied orgno is only 10 char (i.e. without dash)
-        //Insert dash
-        if (10 === mb_strlen($orgNo, 'utf-8')) {
-            $orgNo = substr_replace($orgNo, '-', 6, 0);
+        if (preg_match('/(\d{6})-?(\d{4})/', $orgNo, $matches) === 1) {
+            $parts = [$matches[1], $matches[2]];
+            return [
+                implode('-', $parts),
+                implode('', $parts),
+            ];
         }
-
-        $orgNoFilterArray[] = $orgNo;
-
-        return $orgNoFilterArray;
+        return [];
     }
 
 }
