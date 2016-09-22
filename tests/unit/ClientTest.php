@@ -80,7 +80,7 @@ class ClientTest extends Test
     public function it_should_generate_two_variations_of_org_no()
     {
         $orgNo = '556933-9251';
-        $orgNos = $this->client::getOrgNoVariations($orgNo);
+        $orgNos = Client::getOrgNoVariations($orgNo);
         $this->assertEquals(['5569339251', '556933-9251'], $orgNos);
     }
 }
