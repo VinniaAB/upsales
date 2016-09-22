@@ -21,7 +21,7 @@
     },
     "autoload-dev": {
         "psr-4": {
-            "Vinnia\\Upsales\\Tests\\" : "tests/unit"
+            "Vinnia\\Upsales\\Test\\" : "tests/unit"
         }
     },
     "require-dev": {
