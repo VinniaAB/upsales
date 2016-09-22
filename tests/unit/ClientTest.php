@@ -114,7 +114,7 @@ class ClientTest extends Test
         try {
             $res = $this->client->createOrder([
                 'description' => 'Harambe',
-                'date' => date('Y-m-d'),
+                'date' => date('c'),
                 'user' => 19, // amanda thorén
                 'stage' => 11, // Muntlig överenskommelse
                 'probability' => 95, // for some reason this field cannot be inferred from the stage
