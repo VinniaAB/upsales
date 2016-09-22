@@ -37,7 +37,7 @@ class Client
      * @param ClientInterface $client
      * @param $accessToken
      */
-    public function __construct(ClientInterface $client, String $accessToken)
+    public function __construct(ClientInterface $client, string $accessToken)
     {
         $this->client = $client;
         $this->accessToken = $accessToken;
@@ -121,6 +121,50 @@ class Client
             ];
         }
         return [];
+    }
+
+    public function getOrdersByClientId(string $clientId): ResponseInterface
+    {
+        $options = [
+            'query' => [
+                'client.id' => "eq:$clientId",
+            ],
+        ];
+        return $this->sendRequest('GET', 'orders', $options);
+    }
+
+    public function getOrderById(string $id): ResponseInterface
+    {
+        return $this->sendRequest('GET', "orders/$id");
+    }
+
+    public function createOrder(array $data): ResponseInterface
+    {
+        return $this->sendRequest('POST', 'orders', [
+            'json' => $data,
+        ]);
+    }
+
+    public function updateOrder(string $id, array $data): ResponseInterface
+    {
+        return $this->sendRequest('POST', "orders/$id", [
+            'json' => $data,
+        ]);
+    }
+
+    public function deleteOrder(string $id): ResponseInterface
+    {
+        return $this->sendRequest('DELETE', "orders/$id");
+    }
+
+    public function getOrderStages(): ResponseInterface
+    {
+        return $this->sendRequest('GET', 'orderstages');
+    }
+
+    public function getUsers(): ResponseInterface
+    {
+        return $this->sendRequest('GET', 'users');
     }
 
 }

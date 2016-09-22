@@ -10,6 +10,7 @@ declare(strict_types = 1);
 namespace Vinnia\Upsales\Test;
 
 use Codeception\TestCase\Test;
+use GuzzleHttp\Exception\TransferException;
 use Vinnia\Upsales\Client;
 
 class ClientTest extends Test
@@ -91,6 +92,56 @@ class ClientTest extends Test
         foreach ($expectedResult as $num) {
             $this->assertContains($num, $variations);
         }
+    }
+
+    public function testGetOrdersByOrgNo()
+    {
+        $res = $this->client->getOrdersByClientId('4536'); // Vinnia AB
+        $data = Client::decodeResponse($res);
+        codecept_debug($data);
+        $this->assertNotEmpty($data['data']);
+    }
+
+    public function testGetOrderStages()
+    {
+        $res = $this->client->getOrderStages();
+        $data = Client::decodeResponse($res);
+        codecept_debug($data);
+    }
+
+    public function testCreateOrder()
+    {
+        try {
+            $res = $this->client->createOrder([
+                'description' => 'Harambe',
+                'date' => date('Y-m-d'),
+                'user' => 19, // amanda thorén
+                'stage' => 11, // Muntlig överenskommelse
+                'probability' => 95, // for some reason this field cannot be inferred from the stage
+                'client' => 4536,
+                'orderRow' => [
+                    [
+                        'product' => [
+                            'id' => 10000001,
+                        ],
+                        'price' => 5000,
+                        'quantity' => 1,
+                    ],
+                ],
+            ]);
+            $data = Client::decodeResponse($res);
+            codecept_debug($data);
+
+            // delete the created order when we're done
+            $res = $this->client->deleteOrder((string) $data['data']['id']);
+            $data = Client::decodeResponse($res);
+            codecept_debug($data);
+        }
+        catch (TransferException $e) {
+            $res = (string) $e->getResponse()->getBody();
+            codecept_debug($res);
+        }
+
     }
 
 }
