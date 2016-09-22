@@ -5,9 +5,9 @@
  * Date: 2016-09-22
  * Time: 17:27
  */
+declare(strict_types = 1);
 
 namespace Vinnia\Upsales;
-
 
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Constraints\All;
