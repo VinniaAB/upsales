@@ -5,6 +5,7 @@
  * Date: 22/08/16
  * Time: 22:01
  */
+declare(strict_types = 1);
 
 namespace Vinnia\Upsales;
 
@@ -13,15 +14,23 @@ use Psr\Http\Message\ResponseInterface;
 
 class Client
 {
+
     const API_URL = 'https://integration.upsales.com/api/v2/';
+
     /**
      * @var ClientInterface
      */
     private $client;
+
     /**
-     * @var String
+     * @var string
      */
     private $accessToken;
+
+    /**
+     * @var array
+     */
+    private $queries;
 
     /**
      * Client constructor.
@@ -34,8 +43,8 @@ class Client
         $this->accessToken = $accessToken;
         $this->queries = [
             'query' => [
-                'token' => $accessToken
-            ]
+                'token' => $accessToken,
+            ],
         ];
     }
 
@@ -43,7 +52,7 @@ class Client
      * @param String $accessToken
      * @return Client
      */
-    public static function make(String $accessToken)
+    public static function make(string $accessToken)
     {
         $client = new \GuzzleHttp\Client();
         return new self($client, $accessToken);
@@ -60,36 +69,37 @@ class Client
     }
 
     /**
+     * @param array $options
      * @return ResponseInterface
      */
-    public function getClients($options = []) : ResponseInterface
+    public function getClients(array $options = []) : ResponseInterface
     {
         return $this->sendRequest('GET', 'accounts', $options);
     }
 
-    public function getClientByOrgNo(String $orgNo) : ResponseInterface
+    public function getClientByOrgNo(string $orgNo) : ResponseInterface
     {
         $orgNoFilter = implode(',', self::getOrgNoVariations($orgNo));
         $options = [
             'query' => [
-                'custom' => "eq:1:$orgNoFilter"
-            ]
+                'custom' => "eq:1:$orgNoFilter",
+            ],
         ];
         return $this->getClients($options);
     }
 
-    public function getClientById(String $id) : ResponseInterface
+    public function getClientById(string $id) : ResponseInterface
     {
-        return $this->sendRequest('GET', 'accounts'.'/'.$id);
+        return $this->sendRequest('GET', "accounts/$id");
     }
 
     /**
-     * @param String $method
-     * @param String $endpoint
+     * @param string $method
+     * @param string $endpoint
      * @param array $options
      * @return ResponseInterface
      */
-    protected function sendRequest(String $method, String $endpoint, $options = []) : ResponseInterface
+    protected function sendRequest(string $method, string $endpoint, array $options = []) : ResponseInterface
     {
         $options = array_merge_recursive($options, $this->queries);
         return $this->client->request($method, self::API_URL . $endpoint, $options);
@@ -109,7 +119,7 @@ class Client
 
         //If supplied orgno is only 10 char (i.e. without dash)
         //Insert dash
-        if (10 === strlen($orgNo)) {
+        if (10 === mb_strlen($orgNo, 'utf-8')) {
             $orgNo = substr_replace($orgNo, '-', 6, 0);
         }
 

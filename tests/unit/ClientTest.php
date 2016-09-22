@@ -5,6 +5,7 @@
  * Date: 22/08/16
  * Time: 22:51
  */
+declare(strict_types = 1);
 
 namespace Vinnia\Upsales\Test;
 
