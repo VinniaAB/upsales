@@ -15,6 +15,9 @@ use Vinnia\Upsales\Client;
 class ClientTest extends Test
 {
 
+    /**
+     * @var array
+     */
     private $env;
 
     /**
@@ -30,11 +33,10 @@ class ClientTest extends Test
         $this->client = Client::make($this->env['accessToken']);
     }
 
-    /**
-     * deprecated test - only takes bandwidth
-     */
-    public function it_should_load_1000_clients()
+    public function testItShouldLoad1000Clients()
     {
+        $this->markTestSkipped('Only takes bandwidth');
+
         $res = $this->client->getClients();
         $clients = Client::decodeResponse($res);
 
@@ -42,10 +44,7 @@ class ClientTest extends Test
         $this->assertEquals(1000,count($clients['data']));
     }
 
-    /**
-     * @test
-     */
-    public function it_should_find_client_by_orgnr()
+    public function testItShouldFindClientByOrgNo()
     {
         $res = $this->client->getClientByOrgNo('556933-9251');
         $clients = Client::decodeResponse($res);
@@ -53,10 +52,7 @@ class ClientTest extends Test
         $this->assertEquals(1, count($clients['metadata']['total']));
     }
 
-    /**
-     * @test
-     */
-    public function it_should_find_client_by_orgnr_without_dash()
+    public function testItShouldFindClientByOrgNoWithoutDash()
     {
         $res = $this->client->getClientByOrgNo('5569339251');
         $clients = Client::decodeResponse($res);
@@ -64,10 +60,7 @@ class ClientTest extends Test
         $this->assertEquals(1, count($clients['metadata']['total']));
     }
 
-    /**
-     * @test
-     */
-    public function it_should_find_client_by_id()
+    public function testItShouldFindClientById()
     {
         $res = $this->client->getClientById('3326');
         $client = Client::decodeResponse($res);
@@ -75,13 +68,11 @@ class ClientTest extends Test
         $this->assertEquals('Snille Bemanning AB', $client['data']['name']);
     }
 
-    /**
-     * @test
-     */
-    public function it_should_generate_two_variations_of_org_no()
+    public function testItShouldGenerateTwoVariationsOfOrgNo()
     {
         $orgNo = '556933-9251';
         $orgNos = Client::getOrgNoVariations($orgNo);
         $this->assertEquals(['5569339251', '556933-9251'], $orgNos);
     }
+
 }
