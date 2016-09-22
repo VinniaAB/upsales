@@ -129,8 +129,3 @@ class Client
     }
 
 }
-
-/**
- * Working url for searching:
- * https://integration.upsales.com/api/v2/accounts/?token=XXX&custom.fieldId=1&custom.value=556933-9251
- */

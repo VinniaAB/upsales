@@ -42,3 +42,8 @@ Copy `env.sample.php` into `env.php` and enter a valid access token. Then run th
 ```shell
 vendor/bin/codecept run
 ```
+
+## Test URL
+```
+https://integration.upsales.com/api/v2/accounts/?token={TOKEN_WITHOUT_BRACES}&custom.fieldId=1&custom.value=556933-9251
+```
