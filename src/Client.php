@@ -28,6 +28,11 @@ class Client
     private $accessToken;
 
     /**
+     * @var string
+     */
+    private $apiUrl;
+
+    /**
      * @var array
      */
     private $queries;
@@ -35,12 +40,14 @@ class Client
     /**
      * Client constructor.
      * @param ClientInterface $client
-     * @param $accessToken
+     * @param string $accessToken
+     * @param string $apiUrl
      */
-    public function __construct(ClientInterface $client, string $accessToken)
+    public function __construct(ClientInterface $client, string $accessToken, string $apiUrl = self::API_URL)
     {
         $this->client = $client;
         $this->accessToken = $accessToken;
+        $this->apiUrl = $apiUrl;
         $this->queries = [
             'query' => [
                 'token' => $accessToken,
@@ -102,7 +109,7 @@ class Client
     protected function sendRequest(string $method, string $endpoint, array $options = []) : ResponseInterface
     {
         $options = array_merge_recursive($options, $this->queries);
-        return $this->client->request($method, self::API_URL . $endpoint, $options);
+        return $this->client->request($method, $this->apiUrl . $endpoint, $options);
     }
 
     /**
