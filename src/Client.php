@@ -154,7 +154,7 @@ class Client
 
     public function updateOrder(string $id, array $data): ResponseInterface
     {
-        return $this->sendRequest('POST', "orders/$id", [
+        return $this->sendRequest('PUT', "orders/$id", [
             'json' => $data,
         ]);
     }
