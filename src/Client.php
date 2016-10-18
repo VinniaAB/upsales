@@ -130,6 +130,11 @@ class Client
         return [];
     }
 
+    public function getOrders(array $options = []): ResponseInterface
+    {
+        return $this->sendRequest('GET', 'orders', $options);
+    }
+
     public function getOrdersByClientId(string $clientId): ResponseInterface
     {
         $options = [
@@ -137,7 +142,7 @@ class Client
                 'client.id' => "eq:$clientId",
             ],
         ];
-        return $this->sendRequest('GET', 'orders', $options);
+        return $this->getOrders($options);
     }
 
     public function getOrderById(string $id): ResponseInterface
