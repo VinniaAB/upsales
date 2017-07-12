@@ -52,8 +52,8 @@ class Validator
             'allowExtraFields' => true,
             'fields' => [
                 'product' => $this->getProductConstraint(),
-                'price' => new Type('integer'),
-                'quantity' => new Type('integer'),
+                'price' => new Type('numeric'),
+                'quantity' => new Type('numeric'),
             ],
         ]);
     }
