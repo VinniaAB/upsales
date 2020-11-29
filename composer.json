@@ -8,11 +8,13 @@
         }
     ],
     "require": {
-        "php": "^7.0",
-        "guzzlehttp/guzzle": "^6.2",
-        "ext-mbstring": "*",
+        "php": ">=7.1.0",
         "ext-curl": "*",
-        "symfony/validator": "^3.1"
+        "ext-json": "*",
+        "ext-mbstring": "*",
+        "guzzlehttp/guzzle": "^6.2",
+        "symfony/validator": "^3.1",
+        "phpunit/phpunit": "^7.5"
     },
     "autoload": {
         "psr-4": {
@@ -21,10 +23,12 @@
     },
     "autoload-dev": {
         "psr-4": {
-            "Vinnia\\Upsales\\Test\\" : "tests/unit"
+            "Vinnia\\Upsales\\Test\\" : "tests"
         }
     },
-    "require-dev": {
-        "codeception/codeception": "^2.2"
+    "config": {
+        "platform": {
+            "php": "7.1.0"
+        }
     }
 }

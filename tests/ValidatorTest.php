@@ -1,19 +1,11 @@
-<?php
-/**
- * Created by PhpStorm.
- * User: johan
- * Date: 2016-09-22
- * Time: 17:41
- */
-declare(strict_types = 1);
+<?php declare(strict_types = 1);
 
 namespace Vinnia\Upsales\Test;
 
-
-use Codeception\TestCase\Test;
+use PHPUnit\Framework\TestCase;
 use Vinnia\Upsales\Validator;
 
-class ValidatorTest extends Test
+class ValidatorTest extends TestCase
 {
 
     /**
@@ -56,14 +48,12 @@ class ValidatorTest extends Test
         ];
 
         $res = $this->validator->validateOrder($data);
-        codecept_debug((string) $res);
+
         $this->assertCount(0, $res);
 
         $data['orderRow'][0]['product']['id'] = 'Hello World';
 
         $res = $this->validator->validateOrder($data);
-        codecept_debug((string) $res);
         $this->assertCount(1, $res);
     }
-
 }
